@@ -2,6 +2,7 @@
 
 namespace EMS\Framework\Http;
 
+use EMS\Framework\Controller\Controller;
 use FastRoute\Dispatcher;
 use FastRoute\RouteCollector;
 
@@ -27,13 +28,20 @@ class Kernel
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
                 // 404
-                return new Response("Not Found", 404);
+                return new Response("<h1>Not Found</h1>", 404);
             case Dispatcher::METHOD_NOT_ALLOWED:
                 // 405
-                return new Response("Method not allowed", 405);
+                return new Response("<h1>Method Not Allowed</h1>", 405);
             case Dispatcher::FOUND:
                 [$status, [$controller, $method], $vars] = $routeInfo;
-                return call_user_func_array([new $controller, $method], $vars);
+
+                $controller = new $controller;
+
+                if ($controller instanceof Controller) {
+                    $controller->setRequest($request);
+                }
+
+                return call_user_func_array([$controller, $method], $vars);
         }
     }
 }
