@@ -1,0 +1,19 @@
+{
+  "name": "ems/framework",
+  "version": "1.0.0",
+  "autoload": {
+    "psr-4": {
+      "EMS\\Framework\\": "src/",
+      "App\\": "app/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Tauhid",
+      "email": "tauhid.coder@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "symfony/var-dumper": "^7.2"
+  }
+}
