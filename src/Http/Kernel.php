@@ -2,12 +2,38 @@
 
 namespace EMS\Framework\Http;
 
+use FastRoute\Dispatcher;
+use FastRoute\RouteCollector;
+
+use function FastRoute\simpleDispatcher;
+
 class Kernel
 {
     public function handle(Request $request): Response
     {
-        $content = "<h1>Hello World PHP</h1>";
+        $dispatcher = simpleDispatcher(function (RouteCollector $routeCollector) {
+            $routes = include BASE_PATH . '/routes/web.php';
 
-        return new Response($content);
+            foreach ($routes as $route) {
+                $routeCollector->addRoute(...$route);
+            }
+        });
+
+        $routeInfo = $dispatcher->dispatch(
+            $request->getMethod(),
+            $request->getUri()
+        );
+
+        switch ($routeInfo[0]) {
+            case Dispatcher::NOT_FOUND:
+                // 404
+                return new Response("Not Found", 404);
+            case Dispatcher::METHOD_NOT_ALLOWED:
+                // 405
+                return new Response("Method not allowed", 405);
+            case Dispatcher::FOUND:
+                [$status, [$controller, $method], $vars] = $routeInfo;
+                return call_user_func_array([new $controller, $method], $vars);
+        }
     }
 }
