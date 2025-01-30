@@ -1,0 +1,28 @@
+{% extends "layouts/guest.twig" %}
+
+{% block content %}
+<div class="container-md d-flex justify-content-center align-items-center" style="min-height: calc(100vh - 97px)">    
+    <div class="card mx-auto" style="width: 100%;max-width: 25rem;">
+        <div class="card-header fs-4 fw-medium">
+            Sign In
+        </div>
+
+        <div class="card-body">
+            <form>
+                <div class="mb-2">
+                    <label for="email" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" placeholder="********">
+                </div>
+
+                <button class="btn btn-primary w-100 mb-3" type="submit">Sign in</button>
+
+                <a href="{{ url('sign-up') }}" class="d-block text-center">Do not have an account?</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

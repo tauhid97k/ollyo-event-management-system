@@ -38,8 +38,18 @@ class Kernel
         $dispatcher = simpleDispatcher(function (RouteCollector $routeCollector) {
             $routes = include BASE_PATH . '/routes/web.php';
 
-            foreach ($routes as $route) {
-                $routeCollector->addRoute(...$route);
+            foreach ($routes as $routeDefinition) {
+                $method = $routeDefinition[0];
+                $path = $routeDefinition[1];
+                $handler = $routeDefinition[2];
+                $name = $routeDefinition['name'] ?? null;
+
+                $routeCollector->addRoute($method, $path, $handler);
+
+                // if Name is set
+                if ($name) {
+                    $routeNames[$method . $path] = $name;
+                }
             }
         });
 

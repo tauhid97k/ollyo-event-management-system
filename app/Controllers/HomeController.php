@@ -11,4 +11,14 @@ class HomeController extends Controller
     {
         return $this->render("home.twig");
     }
+
+    public function signIn(): Response
+    {
+        return $this->render("sign-in.twig");
+    }
+
+    public function signUp(): Response
+    {
+        return $this->render("sign-up.twig");
+    }
 }
