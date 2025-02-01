@@ -31,13 +31,13 @@ abstract class Controller
             throw new \Exception("Route '{$routeName}' not found."); // Handle the error
         }
 
-        // 3. Construct the URL
-        $url = $foundRoute[1]; // Start with the path
+        // Construct the URL
+        $url = $foundRoute[1];
 
-        // 4. Handle parameters (if any)
+        // Handle parameters (if any)
         if (!empty($params)) {
             //  Important: FastRoute uses placeholders like {id} in routes.
-            //  We need to replace these with the actual parameter values.
+            //  Need to replace these with the actual parameter values.
             foreach ($params as $paramName => $paramValue) {
                 $placeholder = '{' . $paramName . '}';
                 $url = str_replace($placeholder, $paramValue, $url);
@@ -62,24 +62,43 @@ abstract class Controller
         return $matches;
     }
 
+    // Redirect Method
+    protected function redirect(string $routeName, array $with = [], int $status = 302): Response
+    {
+        $url = $this->generateUrl($routeName);
+
+        // Store flash data in the session (if exist)
+        if (!empty($with)) {
+            $_SESSION['flash'] = $with;
+        }
+
+        header('Location: ' . $url, true, $status);
+
+        return new Response('', $status);
+    }
+
+    // Twig Template rendering method
     public function render(string $template, ?array $vars = [])
     {
-        // Set views folder
         $templatePath = BASE_PATH . "/views";
         $loader = new FilesystemLoader($templatePath);
         $twig = new Environment($loader);
 
-        // Generate URL for named route
         $twig->addFunction(new TwigFunction('url', [$this, 'generateUrl']));
-
-        // Current path checking functionality
         $currentPath = parse_url($this->request->getUri(), PHP_URL_PATH);
         $twig->addGlobal('current_path', $currentPath);
+
+        // Get flash messages or an empty array
+        $flash = $_SESSION['flash'] ?? [];
+
+        $vars['flash'] = $flash; // Assign flash messages to the 'flash' variable
+
+        // Clear flash messages after they are assigned to the Twig variable
+        unset($_SESSION['flash']);
 
         $content = $twig->render($template, $vars);
 
         $response = new Response($content);
-
         return $response;
     }
 

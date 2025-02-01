@@ -1,4 +1,6 @@
 <?php
+// Start session
+session_start();
 
 use EMS\Framework\Http\Kernel;
 use EMS\Framework\Http\Request;
@@ -12,5 +14,4 @@ $request = Request::create();
 $kernel = new Kernel();
 
 $response = $kernel->handle($request);
-
 $response->send();
