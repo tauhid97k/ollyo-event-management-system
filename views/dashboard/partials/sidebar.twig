@@ -6,6 +6,25 @@
 
   <!-- Sidebar Menu -->
   <nav class="overflow-y-auto w-full p-4">
-    <ul></ul>
+    <ul class="d-flex flex-column gap-2">
+      <li>
+        <a href="{{ url('dashboard') }}" class="d-sidebar-link {{ current_path == '/dashboard' ? 'active' : '' }}">
+          <i class="fa-solid fa-house d-sidebar-icon"></i>
+          <span>Dashboard</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ url('events.index') }}" class="d-sidebar-link {{ current_path == current_path starts with '/dashboard/events' ? 'active' : '' }}">
+          <i class="fa-solid fa-calendar-days d-sidebar-icon"></i>
+          <span>Events</span>
+        </a>
+      </li>
+      <li>
+        <a href="{{ url('users.index') }}" class="d-sidebar-link {{ current_path == current_path starts with '/dashboard/users' ? 'active' : '' }}">
+          <i class="fa-solid fa-user d-sidebar-icon"></i>
+          <span>Users</span>
+        </a>
+      </li>
+    </ul>
   </nav>
 </aside>

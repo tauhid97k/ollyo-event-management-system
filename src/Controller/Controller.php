@@ -64,11 +64,17 @@ abstract class Controller
 
     public function render(string $template, ?array $vars = [])
     {
+        // Set views folder
         $templatePath = BASE_PATH . "/views";
         $loader = new FilesystemLoader($templatePath);
         $twig = new Environment($loader);
 
+        // Generate URL for named route
         $twig->addFunction(new TwigFunction('url', [$this, 'generateUrl']));
+
+        // Current path checking functionality
+        $currentPath = parse_url($this->request->getUri(), PHP_URL_PATH);
+        $twig->addGlobal('current_path', $currentPath);
 
         $content = $twig->render($template, $vars);
 

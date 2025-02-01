@@ -1,3 +1,11 @@
+/* === Global === */
+ul {
+  padding: 0;
+}
+ul li {
+  list-style: none;
+}
+
 /* === Dashboard === */
 
 /* Sidebar */
@@ -7,6 +15,26 @@
 }
 .d-sidebar-header {
   height: 64px;
+}
+.d-sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0.5rem 1rem;
+  font-size: 1.2rem;
+  color: whitesmoke;
+  text-decoration: none;
+  border-radius: 0.375rem;
+}
+.d-sidebar-link:hover {
+  background-color: #212529;
+}
+.d-sidebar-icon {
+  width: 20px;
+  height: 20px;
+}
+.d-sidebar-link.active {
+  background-color: #212529;
 }
 
 /* Header */
