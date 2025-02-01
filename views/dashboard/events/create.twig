@@ -1,13 +1,58 @@
 {% extends 'layouts/app.twig' %}
 
 {% block content %}
+  <p>{{ message }}</p>
   <h2 class="mb-4">Create New Event</h2>
-  <form action="{{ url('events.store') }}" method="post">
-    <div class="card">
+  <form action="{{ url('events.store') }}" method="post" enctype="multipart/form-data">
+    <div class="card bg-body-tertiary">
       <div class="card-body">
         <div class="mb-3">
-          <label for="name" class="form-label">Event Name</label>
-          <input type="name" class="form-control" id="name" placeholder="Event name" />
+          <label for="thumbnail" class="form-label">Event Thumbnail</label>
+          <input type="file" name="thumbnail" class="form-control" id="thumbnail" />
+          {% if flash.errors.thumbnail|length %}
+            <div class="input-error text-danger">{{ flash.errors.thumbnail[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="title" class="form-label">Event Title</label>
+          <input type="text" name="title" value="{{ old.title ?? '' }}" class="form-control" id="title" />
+          {% if flash.errors.title|length %}
+            <div class="input-error text-danger">{{ flash.errors.title[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="date" class="form-label">Date</label>
+          <input type="date" name="date" value="{{ old.date ?? '' }}" class="form-control" id="date" />
+          {% if flash.errors.date|length %}
+            <div class="input-error text-danger">{{ flash.errors.date[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="status" class="form-label">Status</label>
+          <select name="status" id="status" value="{{ old.status ?? '' }}" class="form-select">
+            <option value="upcoming">Upcoming</option>
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="private">Private</option>
+          </select>
+          {% if flash.errors.status|length %}
+            <div class="input-error text-danger">{{ flash.errors.status[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label for="limit" class="form-label">Limit <small>(Registration)</small></label>
+          <input type="number" name="limit" value="{{ old.limit ?? '' }}" class="form-control" id="limit" />
+          {% if flash.errors.limit|length %}
+            <div class="input-error text-danger">{{ flash.errors.limit[0] }}</div>
+          {% endif %}
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Description</label>
+          <div id="editor"></div>
+          <input type="hidden" name="description" id="description-input" value="{{ old.description ?? '' }}" />
+          {% if flash.errors.description|length %}
+            <div class="input-error text-danger">{{ flash.errors.description[0] }}</div>
+          {% endif %}
         </div>
         <button type="submit" class="btn btn-primary">Create Event</button>
       </div>

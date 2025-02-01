@@ -56,6 +56,16 @@ class Request
         return $value;
     }
 
+    // Get file input
+    public function file(string $key): ?array
+    {
+        if (isset($this->files[$key])) {
+            return $this->files[$key];
+        }
+
+        return null;
+    }
+
     // Get All request (Post & Get combined)
     public function all(): array
     {
@@ -83,7 +93,7 @@ class Request
                 $rulesArray = array_diff($rulesArray, ['sometimes']);
             }
 
-            // Check for  required
+            // Check for required
             if (in_array('required', $rulesArray)) {
                 if (empty($value) && !$file) { // Check both value and file for required
                     $message = $messages[$field . '.required'] ?? $messages['required'] ?? "$field is required.";
@@ -92,11 +102,16 @@ class Request
                 }
             }
 
-            // Handle file related validations (only if it's a file field and has a value or file)
-            if ($isFileField && ($value || $file)) {
-                foreach ($rulesArray as $rule) {
-                    if ($rule === 'file' || $rule === 'required') continue; // Skip if 'file' and 'required' as they are already handled
+            // Check for file
+            if ($isFileField) {
+                // Check if it's actually a file upload 
+                if (!$file || $file['error'] !== UPLOAD_ERR_OK) {
+                    $message = $messages[$field . '.file'] ?? $messages['file'] ?? "$field must be a valid file.";
+                    $errors[$field][] = $message;
+                    continue; // Skip other validations if not a valid file
+                }
 
+                foreach ($rulesArray as $rule) {
                     $ruleParts = explode(':', $rule);
                     $ruleName = $ruleParts[0];
                     $ruleParam = $ruleParts[1] ?? null;
@@ -105,14 +120,29 @@ class Request
 
                     switch ($ruleName) {
                         case 'max_size':
-                            if ($file && $file['size'] > $ruleParam * 1024 * 1024) {
+                            if ($file['size'] > $ruleParam * 1024 * 1024) {
                                 $errors[$field][] = $message ?? "$field exceeds the maximum size of $ruleParam MB.";
-                            } elseif (!$isFileField) {
-                                $errors[$field][] = $message ?? "max_size validation can only be applied to file fields.";
+                            }
+                            break;
+                        case 'mime':
+                            $allowedMimes = explode(',', $ruleParam);
+                            $fileTypeLower = strtolower($file['type']); // Convert to lowercase
+
+                            $isValidMime = false;
+                            foreach ($allowedMimes as $allowedMime) {
+                                if (strtolower($allowedMime) === $fileTypeLower) { // Case-insensitive comparison
+                                    $isValidMime = true;
+                                    break;
+                                }
+                            }
+
+                            if (!$isValidMime) {
+                                $errors[$field][] = $message ?? "invalid file type. Allowed types are: " . implode(', ', $allowedMimes);
                             }
                             break;
                     }
                 }
+                continue; // Skip other (non-file) validations for file fields
             }
 
             // Check other rules 
@@ -159,6 +189,17 @@ class Request
                             $errors[$field][] = $message ?? "$field must be a valid email address.";
                         }
                         break;
+                    case 'min':
+                        if (strlen($value) < $ruleParam) {
+                            $errors[$field][] = $message ?? "$field must be at least $ruleParam characters.";
+                        }
+                        break;
+
+                    case 'max':
+                        if (strlen($value) > $ruleParam) {
+                            $errors[$field][] = $message ?? "$field cannot exceed $ruleParam characters.";
+                        }
+                        break;
                     case 'date': // Date validation
                         if ($value !== null && strtotime($value) === false) { // Check if it's a valid date
                             $errors[$field][] = $message ?? "$field must be a valid date.";
@@ -172,22 +213,6 @@ class Request
                         $allowedValues = explode(',', $ruleParam); // Split allowed values by comma
                         if (!in_array($value, $allowedValues)) {
                             $errors[$field][] = $message ?? "$field must be one of the following: " . implode(', ', $allowedValues);
-                        }
-                        break;
-                    case 'file': // File upload handling
-                        if (!($file = $this->files[$field] ?? null)) {
-                            $errors[$field][] = $message ?? "A file is required for $field.";
-                            break;
-                        }
-                        break;
-                    case 'mime':
-                        if ($file && $isFileField) { // Check if it's a file field AND a file was uploaded
-                            $allowedMimes = explode(',', $ruleParam);
-                            if (!in_array($file['type'], $allowedMimes)) {
-                                $errors[$field][] = $message ?? "$field has an invalid MIME type. Allowed types are: " . implode(', ', $allowedMimes);
-                            }
-                        } elseif (!$isFileField && !empty($value)) { // Handle the case where mime is used on non-file fields.
-                            $errors[$field][] = $message ?? "mime validation can only be applied to file fields.";
                         }
                         break;
                 }

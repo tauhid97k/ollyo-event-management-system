@@ -90,11 +90,13 @@ abstract class Controller
 
         // Get flash messages or an empty array
         $flash = $_SESSION['flash'] ?? [];
-
-        $vars['flash'] = $flash; // Assign flash messages to the 'flash' variable
-
-        // Clear flash messages after they are assigned to the Twig variable
+        $vars['flash'] = $flash;
         unset($_SESSION['flash']);
+
+        // Get old input values or an empty array
+        $oldInput = $_SESSION['old'] ?? [];
+        unset($_SESSION['old']);
+        $vars['old'] = $oldInput;
 
         $content = $twig->render($template, $vars);
 

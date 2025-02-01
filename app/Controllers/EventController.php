@@ -20,18 +20,19 @@ class EventController extends Controller
     public function store()
     {
         $errors = $this->request->validate([
-            'name' => "required|string",
-            "description" => "required|string",
+            'title' => "required|string",
             "date" => "required|date",
-            "status" => "required|in:public,private",
-            "limit" => "required|number:int",
-            "thumbnail" => "sometimes|file|max_size: 5",
+            "description" => "required|string",
+            "status" => "required|in:upcoming,open,closed,private",
+            "limit" => "required|number:int|min:1",
+            "thumbnail" => "sometimes|file|max_size:1|mime:image/jpeg,image/jpg,image/png",
         ]);
 
         if (!empty($errors)) {
-            return $this->redirect('events.create', ['errors' => $errors, 'old' => $this->request->all()]);
+            $_SESSION['old'] = $this->request->all();
+            return $this->redirect('events.create', ['errors' => $errors]);
         }
 
-        return $this->redirect("events.create", ["message" => "Event created"]);
+        return $this->redirect("events.index", ["message" => "Event created"]);
     }
 }
