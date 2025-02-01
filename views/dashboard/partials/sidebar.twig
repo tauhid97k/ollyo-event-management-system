@@ -14,13 +14,13 @@
         </a>
       </li>
       <li>
-        <a href="{{ url('events.index') }}" class="d-sidebar-link {{ current_path == current_path starts with '/dashboard/events' ? 'active' : '' }}">
+        <a href="{{ url('events.index') }}" class="d-sidebar-link {{ current_path starts with '/dashboard/events' ? 'active' : '' }}">
           <i class="fa-solid fa-calendar-days d-sidebar-icon"></i>
           <span>Events</span>
         </a>
       </li>
       <li>
-        <a href="{{ url('users.index') }}" class="d-sidebar-link {{ current_path == current_path starts with '/dashboard/users' ? 'active' : '' }}">
+        <a href="{{ url('users.index') }}" class="d-sidebar-link {{ current_path starts with '/dashboard/users' ? 'active' : '' }}">
           <i class="fa-solid fa-user d-sidebar-icon"></i>
           <span>Users</span>
         </a>
