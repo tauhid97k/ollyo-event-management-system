@@ -1,11 +1,225 @@
 {% extends 'layouts/app.twig' %}
 
 {% block content %}
-  <div class="d-flex justify-content-between align-items-center gap-4">
+  <div class="d-flex justify-content-between align-items-center gap-4 mb-4">
     <h2 class="mb-4">Events</h2>
     <a href="{{ url('events.create') }}" class="btn btn-primary d-flex align-items-center gap-2" type="button">
       <i class="fa-solid fa-plus" style="font-size: 16px;"></i>
       <span>Create New</span>
     </a>
   </div>
+
+  <!-- Search -->
+  <form style="max-width: 350px;">
+    <div class="input-group mb-3">
+      <input type="search" class="form-control" placeholder="Search name or email..." aria-label="User's name or email" aria-describedby="search-input" />
+      <button class="btn btn-primary" type="submit" id="search-input"><i class="fa-solid fa-magnifying-glass"></i></button>
+    </div>
+  </form>
+  <div class="table-responsive mb-2">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Date and Time</th>
+          <th>Total Registered</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Workshop on Python</td>
+          <td>15 March 2024, 10:00 AM</td>
+          <td>75/150</td>
+          <td>
+            <span class="bg-success py-1 px-2 rounded small fw-medium">Open</span>
+          </td>
+          <td>
+            <div class="dropdown event-table-action px-4">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-eye" style="width: 18px;height: 18px"></i>
+                    <span>View</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-regular fa-pen-to-square" style="width: 18px;height: 18px"></i>
+                    <span>Edit</span>
+                  </a>
+                </li>
+                <li>
+                  <button class="dropdown-item" href="#">
+                    <i class="fa-regular fa-trash-can" style="width: 18px;height: 18px"></i>
+                    <span>Delete</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Data Science Seminar</td>
+          <td>22 April 2024, 2:00 PM</td>
+          <td>120/200</td>
+          <td>
+            <span class="bg-secondary py-1 px-2 rounded small fw-medium">Private</span>
+          </td>
+          <td>
+            <div class="dropdown event-table-action px-4">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-eye" style="width: 18px;height: 18px"></i>
+                    <span>View</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-regular fa-pen-to-square" style="width: 18px;height: 18px"></i>
+                    <span>Edit</span>
+                  </a>
+                </li>
+                <li>
+                  <button class="dropdown-item" href="#">
+                    <i class="fa-regular fa-trash-can" style="width: 18px;height: 18px"></i>
+                    <span>Delete</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Web Development Bootcamp</td>
+          <td>5 May 2024, 9:00 AM</td>
+          <td>50/80</td>
+          <td>
+            <span class="bg-danger py-1 px-2 rounded small fw-medium">Closed</span>
+          </td>
+          <td>
+            <div class="dropdown event-table-action px-4">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-eye" style="width: 18px;height: 18px"></i>
+                    <span>View</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-regular fa-pen-to-square" style="width: 18px;height: 18px"></i>
+                    <span>Edit</span>
+                  </a>
+                </li>
+                <li>
+                  <button class="dropdown-item" href="#">
+                    <i class="fa-regular fa-trash-can" style="width: 18px;height: 18px"></i>
+                    <span>Delete</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>AI and Machine Learning Conference</td>
+          <td>18 June 2024, 11:00 AM</td>
+          <td>180/250</td>
+          <td>
+            <span class="bg-success py-1 px-2 rounded small fw-medium">Open</span>
+          </td>
+          <td>
+            <div class="dropdown event-table-action px-4">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-eye" style="width: 18px;height: 18px"></i>
+                    <span>View</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-regular fa-pen-to-square" style="width: 18px;height: 18px"></i>
+                    <span>Edit</span>
+                  </a>
+                </li>
+                <li>
+                  <button class="dropdown-item" href="#">
+                    <i class="fa-regular fa-trash-can" style="width: 18px;height: 18px"></i>
+                    <span>Delete</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>Cybersecurity Workshop</td>
+          <td>2 July 2024, 1:00 PM</td>
+          <td>60/100</td>
+          <td>
+            <span class="bg-primary py-1 px-2 rounded small fw-medium">Upcoming</span>
+          </td>
+          <td>
+            <div class="dropdown event-table-action px-4">
+              <a class="dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fa-solid fa-ellipsis-vertical"></i></a>
+
+              <ul class="dropdown-menu">
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-solid fa-eye" style="width: 18px;height: 18px"></i>
+                    <span>View</span>
+                  </a>
+                </li>
+                <li>
+                  <a class="dropdown-item" href="#">
+                    <i class="fa-regular fa-pen-to-square" style="width: 18px;height: 18px"></i>
+                    <span>Edit</span>
+                  </a>
+                </li>
+                <li>
+                  <button class="dropdown-item" href="#">
+                    <i class="fa-regular fa-trash-can" style="width: 18px;height: 18px"></i>
+                    <span>Delete</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <nav aria-label="pagination" class="d-flex justify-content-end">
+    <ul class="pagination">
+      <li class="page-item disabled">
+        <a class="page-link">Previous</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">1</a>
+      </li>
+      <li class="page-item active" aria-current="page">
+        <a class="page-link" href="#">2</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">3</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#">Next</a>
+      </li>
+    </ul>
+  </nav>
 {% endblock %}

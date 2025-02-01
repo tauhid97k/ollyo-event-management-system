@@ -6,6 +6,11 @@ ul li {
   list-style: none;
 }
 
+table th,
+table td {
+  white-space: nowrap;
+}
+
 /* Form */
 .input-error {
   font-size: 0.875em;
@@ -79,4 +84,9 @@ ul li {
 /* Header */
 .d-header {
   height: 64px;
+}
+
+/* Events */
+.event-table-action .dropdown-toggle::after {
+  content: none;
 }
