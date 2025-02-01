@@ -1,7 +1,16 @@
 {% include 'partials/header.twig' %}
 
-{% block content %}
+<div class="d-flex vh-100 overflow-hidden">
+  {% include '/dashboard/partials/sidebar.twig' %}
 
-{% endblock %}
+  <div class="d-flex flex-column flex-fill overflow-y-auto">
+    {% include '/dashboard/partials/header.twig' %}
+    <main class="p-4 flex-fill">
+      {% block content %}
+
+      {% endblock %}
+    </main>
+  </div>
+</div>
 
 {% include 'partials/footer.twig' %}

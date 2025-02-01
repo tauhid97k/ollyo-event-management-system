@@ -1,0 +1,15 @@
+/* === Dashboard === */
+
+/* Sidebar */
+.d-sidebar {
+  width: 300px;
+  height: 100vh;
+}
+.d-sidebar-header {
+  height: 64px;
+}
+
+/* Header */
+.d-header {
+  height: 64px;
+}
