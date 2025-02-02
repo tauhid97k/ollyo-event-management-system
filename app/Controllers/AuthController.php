@@ -55,4 +55,49 @@ class AuthController extends Controller
             return $this->redirect('sign-up.view', ['error' => 'Registration failed. Please try again.']);
         }
     }
+
+    // User Login
+    public function login()
+    {
+        $errors = $this->request->validate([
+            'email' => 'required|email',
+            'password' => 'required|string|min:8',
+        ]);
+
+        if (!empty($errors)) {
+            $oldInput = $this->request->all();
+            unset($oldInput['password']); // Remove the password from the old input
+            $_SESSION['old'] = $oldInput;
+
+            return $this->redirect('sign-in.view', ['errors' => $errors]);
+        }
+
+        $email = $this->request->input('email');
+        $password = $this->request->input('password');
+
+        $user = new User();
+        $existingUser = $user->findByEmail($email);
+
+        // Check if user exist and if credentials are correct
+        if ($existingUser && password_verify($password, $existingUser['password'])) {
+
+            session_regenerate_id(true);
+
+            // If success Store user information in the session
+            $_SESSION['user'] = [
+                'id' => $existingUser['id'],
+                'name' => $existingUser['name'],
+                'email' => $existingUser['email'],
+            ];
+
+            return $this->redirect('dashboard', ['message' => 'Login successful']);
+        } else {
+            // Invalid credentials
+            $oldInput = $this->request->all();
+            unset($oldInput['password']); // Remove the password from the old input
+            $_SESSION['old'] = $oldInput;
+
+            return $this->redirect('sign-in.view', ['error' => 'Invalid email or password']);
+        }
+    }
 }

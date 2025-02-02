@@ -12,6 +12,7 @@ return [
     ["GET", "/sign-in", [AuthController::class, "signInView"], "name" => "sign-in.view"],
     ["GET", "/sign-up", [AuthController::class, "signUpView"], "name" => "sign-up.view"],
     ["POST", "/sign-up", [AuthController::class, "register"], "name" => "register"],
+    ["POST", "/sign-in", [AuthController::class, "login"], "name" => "login"],
 
 
     // Private Routes
