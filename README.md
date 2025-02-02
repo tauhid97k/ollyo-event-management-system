@@ -1,4 +1,4 @@
-## [Live Link](http://...#abcd)
+## [Live Link]([http://...#abcd](http://event-management.fisheryhut.com/))
 
 ## Features
 - Custom MVC (Laravel-like) Project setup from scratch with Bootstrap
