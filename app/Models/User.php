@@ -8,22 +8,20 @@ use PDOException;
 
 class User
 {
-    private ?int $id = null;
-    private string $name;
-    private string $email;
-    private ?PDO $db = null;
-
-    public function __construct()
-    {
-        $connection = Connection::getConnection();
-        $this->db = $connection->pdo; // Access the PDO instance
-    }
+    public ?int $id = null;
+    public string $name;
+    public string $email;
+    public string $created_at;
+    public string $updated_at;
 
     // Save to database
     public function save(array $data): bool
     {
         try {
-            $stmt = $this->db->prepare("
+            $connection = Connection::getConnection();
+            $pdo = $connection->pdo;
+
+            $stmt = $pdo->prepare("
                 INSERT INTO users (name, email, password)  -- Removed 'date'
                 VALUES (:name, :email, :password)
             ");
@@ -34,7 +32,7 @@ class User
                 ':password' => password_hash($data['password'], PASSWORD_DEFAULT),
             ]);
 
-            $this->id = (int)$this->db->lastInsertId();
+            $this->id = (int)$pdo->lastInsertId();
             return true;
         } catch (PDOException $e) {
             error_log($e->getMessage()); // Log the error!
@@ -42,29 +40,40 @@ class User
         }
     }
 
-    // Find by email
+    // Get user by email
     public function findByEmail(string $email)
     {
-        $stmt = $this->db->prepare("SELECT * FROM users WHERE email = :email");
+        $connection = Connection::getConnection();
+        $pdo = $connection->pdo;
+
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
         $stmt->execute([':email' => $email]);
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $user ?? null;
     }
 
-    // Get id
-    public function getId(): ?int
+    // Construct auth user
+    public function getUser(int $id)
     {
-        return $this->id;
-    }
+        $connection = Connection::getConnection();
+        $pdo = $connection->pdo;
 
-    // Get Name
-    public function getName(): string
-    {
-        return $this->name;
-    }
+        $stmt = $pdo->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->execute([':id' => $id]);
+        $userData = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    // Get Email
-    public function getEmail(): string
-    {
-        return $this->email;
+        if ($userData) {
+            $user = new User();
+            $user->id = $userData['id'];
+            $user->name = $userData['name'];
+            $user->email = $userData['email'];
+            $user->created_at = $userData['created_at'];
+            $user->updated_at = $userData['updated_at'];
+
+            return $user;
+        }
+
+        return null;
     }
 }

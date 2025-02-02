@@ -43,6 +43,7 @@ abstract class Controller
         $twig->addFunction(new TwigFunction('url', [$this->response, 'generateUrl']));
         $currentPath = parse_url($this->request->getUri(), PHP_URL_PATH);
         $twig->addGlobal('current_path', $currentPath);
+        $twig->addFunction(new TwigFunction('auth', [$this->request, 'auth']));
 
         // Get flash messages or an empty array
         $flash = $_SESSION['flash'] ?? [];

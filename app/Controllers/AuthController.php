@@ -100,4 +100,19 @@ class AuthController extends Controller
             return $this->redirect('sign-in.view', ['error' => 'Invalid email or password']);
         }
     }
+
+    // User logout
+    public function logout(): Response
+    {
+        // Clear the session 
+        unset($_SESSION['user']);
+
+        // Destroy the session 
+        session_destroy();
+
+        // Regenerate the session ID 
+        session_regenerate_id(true);
+
+        return $this->redirect('sign-in.view', ['message' => 'You are now logged out']);
+    }
 }

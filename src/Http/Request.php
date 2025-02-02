@@ -2,9 +2,12 @@
 
 namespace EMS\Framework\Http;
 
+use App\Models\User;
+
 class Request
 {
     private static $instance = null;
+    private ?User $auth = null;
 
     private function __construct(
         private array $server,
@@ -220,5 +223,22 @@ class Request
         }
 
         return $errors;
+    }
+
+    public function auth(): ?User
+    {
+        // Check if auth is already populated
+        if ($this->auth !== null) {
+            return $this->auth;
+        }
+
+        if (isset($_SESSION['user'])) {
+            $userId = $_SESSION['user']['id'];
+            $user = new User();
+            $this->auth = $user->getUser($userId);
+            return $this->auth;
+        }
+
+        return null;
     }
 }

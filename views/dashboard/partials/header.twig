@@ -1,3 +1,21 @@
 <header class="sticky-top d-flex align-items-center justify-content-between px-4 py-2 bg-body-tertiary border-bottom flex-shrink-0 d-header">
   <button type="button" class="btn btn-dark"><i class="fa-solid fa-bars"></i></button>
+  {% if auth() %}
+    <div class="dropdown">
+      <a href="#" class="d-flex align-items-center justify-content-end link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
+        <span class="me-2">{{ auth().name }}</span>
+        <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+      </a>
+      <ul class="dropdown-menu dropdown-menu-end text-small shadow mt-2" data-popper-placement="top-start">
+        <li>
+          <a class="dropdown-item" href="#">Profile</a>
+        </li>
+        <li>
+          <form action="{{ url('logout') }}" method="post">
+            <button class="dropdown-item" type="submit">Logout</button>
+          </form>
+        </li>
+      </ul>
+    </div>
+  {% endif %}
 </header>

@@ -16,6 +16,8 @@ return [
 
 
     // Private Routes
+    ["POST", "/logout", [AuthController::class, "logout"], "name" => "logout", "middleware" => "auth"],
+
     ["GET", "/dashboard", [DashboardController::class, "index"], "name" => "dashboard", "middleware" => "auth"],
 
     // Event Routes

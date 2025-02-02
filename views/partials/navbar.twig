@@ -8,7 +8,31 @@
           <a class="nav-link active" aria-current="page" href="{{ url('home') }}">Home</a>
         </li>
       </ul>
-      <a href="{{ url('sign-in.view') }}" class="btn btn-primary d-flex ms-auto">Sign in</a>
+      <div class="d-flex ms-auto">
+        {% if auth() %}
+          <div class="dropdown">
+            <a href="#" class="d-flex align-items-center justify-content-end link-body-emphasis text-decoration-none dropdown-toggle show" data-bs-toggle="dropdown" aria-expanded="true">
+              <span class="me-2">{{ auth().name }}</span>
+              <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2" />
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end text-small shadow mt-2" data-popper-placement="top-start">
+              <li>
+                <a class="dropdown-item" href="{{ url('dashboard') }}">Dashboard</a>
+              </li>
+              <li>
+                <a class="dropdown-item" href="#">Profile</a>
+              </li>
+              <li>
+                <form action="{{ url('logout') }}" method="post">
+                  <button class="dropdown-item" type="submit">Logout</button>
+                </form>
+              </li>
+            </ul>
+          </div>
+        {% else %}
+          <a href="{{ url('sign-in.view') }}" class="btn btn-primary">Sign in</a>
+        {% endif %}
+      </div>
     </div>
   </div>
 </nav>
