@@ -6,21 +6,37 @@
       <div class="card-header fs-4 fw-medium">Sign Up</div>
 
       <div class="card-body">
-        <form>
-          <div class="mb-2">
+        <form action="{{ url('register') }}" method="post">
+          <div class="mb-3">
             <label for="name" class="form-label">Your Name</label>
-            <input type="name" class="form-control" id="name" placeholder="john doe" />
+            <input type="text" name="name" class="form-control" value="{{ old.name ?? '' }}" id="name" placeholder="john doe" />
+            {% if flash.errors.name|length %}
+              <div class="input-error text-danger">{{ flash.errors.name[0] }}</div>
+            {% endif %}
           </div>
-          <div class="mb-2">
+          <div class="mb-3">
             <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="email" placeholder="name@example.com" />
+            <input type="email" name="email" class="form-control" value="{{ old.email ?? '' }}" id="email" placeholder="name@example.com" />
+            {% if flash.errors.email|length %}
+              <div class="input-error text-danger">{{ flash.errors.email[0] }}</div>
+            {% endif %}
           </div>
           <div class="mb-3">
             <label for="password" class="form-label">Set Password</label>
-            <input type="password" class="form-control" id="password" placeholder="********" />
+            <input type="password" name="password" class="form-control" id="password" />
+            {% if flash.errors.password|length %}
+              <div class="input-error text-danger">{{ flash.errors.password[0] }}</div>
+            {% endif %}
           </div>
 
-          <button class="btn btn-primary w-100 mb-3" type="submit">Sign in</button>
+          {% if flash.error %}
+            <div class="mb-3 py-2 px-3 d-flex align-items-center gap-2 rounded alert alert-danger" role="alert">
+              <i class="fas fa-exclamation-triangle"></i>
+              <span>{{ flash.error }}</span>
+            </div>
+          {% endif %}
+
+          <button class="btn btn-primary w-100 mb-3" type="submit">Sign Up</button>
 
           <a href="{{ url('sign-in.view') }}" class="d-block text-center">Already have an account?</a>
         </form>
