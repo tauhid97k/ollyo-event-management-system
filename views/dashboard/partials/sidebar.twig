@@ -19,12 +19,14 @@
           <span>Events</span>
         </a>
       </li>
-      <li>
-        <a href="{{ url('users.index') }}" class="d-sidebar-link {{ current_path starts with '/dashboard/users' ? 'active' : '' }}">
-          <i class="fa-solid fa-user d-sidebar-icon"></i>
-          <span>Users</span>
-        </a>
-      </li>
+      {% if auth().role == 'admin' %}
+        <li>
+          <a href="{{ url('users.index') }}" class="d-sidebar-link {{ current_path starts with '/dashboard/users' ? 'active' : '' }}">
+            <i class="fa-solid fa-user d-sidebar-icon"></i>
+            <span>Users</span>
+          </a>
+        </li>
+      {% endif %}
     </ul>
   </nav>
 </aside>

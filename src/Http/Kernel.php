@@ -59,7 +59,7 @@ class Kernel
 
         $routeInfo = $dispatcher->dispatch(
             $request->getMethod(),
-            $request->getUri()
+            parse_url($request->getUri(), PHP_URL_PATH)
         );
 
         // Route validation and response

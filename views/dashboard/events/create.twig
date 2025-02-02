@@ -3,7 +3,7 @@
 {% block content %}
   <p>{{ message }}</p>
   <h2 class="mb-4">Create New Event</h2>
-  <form action="{{ url('events.store') }}" method="post" enctype="multipart/form-data">
+  <form action="{{ url('events.store') }}" method="post" enctype="multipart/form-data" class="event-form">
     <div class="card bg-body-tertiary">
       <div class="card-body">
         <div class="mb-3">

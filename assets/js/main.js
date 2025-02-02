@@ -30,14 +30,13 @@ const quill = new Quill("#editor", {
 // Set old data (If exist)
 const oldDescription = document.getElementById("description-input").value;
 
-console.log(oldDescription);
-
 if (oldDescription) {
   quill.setContents(JSON.parse(oldDescription));
 }
 
 // Append Quill content before submitting
-const form = document.querySelector("form");
+const form = document.querySelector(".event-form");
+
 form.addEventListener("formdata", (event) => {
   event.formData.append("description", JSON.stringify(quill.getContents().ops));
 });

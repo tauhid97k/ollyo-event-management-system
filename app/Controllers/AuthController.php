@@ -107,11 +107,11 @@ class AuthController extends Controller
         // Clear the session 
         unset($_SESSION['user']);
 
-        // Destroy the session 
-        session_destroy();
-
         // Regenerate the session ID 
         session_regenerate_id(true);
+
+        // Destroy the session 
+        session_destroy();
 
         return $this->redirect('sign-in.view', ['message' => 'You are now logged out']);
     }
