@@ -227,16 +227,30 @@ class Request
 
     public function auth(): ?User
     {
-        // Check if auth is already populated
         if ($this->auth !== null) {
             return $this->auth;
         }
 
         if (isset($_SESSION['user'])) {
             $userId = $_SESSION['user']['id'];
+
+            // Check if the session has already been started. If not, start it:
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+
             $user = new User();
-            $this->auth = $user->getUser($userId);
-            return $this->auth;
+            $existingUser = $user->getUser($userId);
+
+            if ($existingUser) {
+                $this->auth = $existingUser;
+                return $this->auth;
+            } else {
+                unset($_SESSION['user']);
+                session_destroy();
+                session_regenerate_id(true);
+                return null;
+            }
         }
 
         return null;

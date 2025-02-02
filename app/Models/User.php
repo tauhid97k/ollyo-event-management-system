@@ -11,6 +11,7 @@ class User
     public ?int $id = null;
     public string $name;
     public string $email;
+    public string $role;
     public string $created_at;
     public string $updated_at;
 
@@ -68,6 +69,7 @@ class User
             $user->id = $userData['id'];
             $user->name = $userData['name'];
             $user->email = $userData['email'];
+            $user->role = $userData['role'];
             $user->created_at = $userData['created_at'];
             $user->updated_at = $userData['updated_at'];
 
