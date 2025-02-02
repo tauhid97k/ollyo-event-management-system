@@ -13,6 +13,8 @@ use function FastRoute\simpleDispatcher;
 class Kernel
 {
     protected ?Connection $connection = null;
+    private ?Response $response; // Declare Response property
+
 
     public function __construct()
     {
@@ -31,13 +33,15 @@ class Kernel
         $connectionString = "mysql:host={$dbHost};dbname={$dbName};port={$dbPort}";
 
         $this->connection = Connection::create($connectionString, $dbUser, $dbPass);
+
+        $this->response = new Response();
     }
 
     public function handle(Request $request): Response
     {
-        $dispatcher = simpleDispatcher(function (RouteCollector $routeCollector) {
-            $routes = include BASE_PATH . '/routes/web.php';
+        $routes = include BASE_PATH . '/routes/web.php';
 
+        $dispatcher = simpleDispatcher(function (RouteCollector $routeCollector) use ($routes) {
             foreach ($routes as $routeDefinition) {
                 $method = $routeDefinition[0];
                 $path = $routeDefinition[1];
@@ -73,6 +77,29 @@ class Kernel
 
                 if ($controller instanceof Controller) {
                     $controller->setRequest($request);
+                }
+
+                // Get the current path for matching
+                $currentPath = $request->getUri();
+
+                // Find the matching route definition to get the middleware
+                foreach ($routes as $routeDefinition) {
+                    if ($routeDefinition[1] === $currentPath) {
+                        $middleware = $routeDefinition['middleware'] ?? null;
+
+                        if ($middleware === 'auth' && !isset($_SESSION['user'])) {
+                            $redirectUrl = $this->response->generateUrl('sign-in.view');
+                            header('Location: ' . $redirectUrl);
+                            exit;
+                        }
+
+                        if ($middleware === 'guest' && isset($_SESSION['user'])) {
+                            $redirectUrl = $this->response->generateUrl('dashboard');
+                            header('Location: ' . $redirectUrl);
+                            exit;
+                        }
+                        break;
+                    }
                 }
 
                 return call_user_func_array([$controller, $method], $vars);
