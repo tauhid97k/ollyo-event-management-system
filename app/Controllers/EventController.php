@@ -29,8 +29,6 @@ class EventController extends Controller
             'totalPages' => $totalPages,
             'search' => $search,
         ]);
-
-        return $this->render("/dashboard/events/index.twig");
     }
 
     public function create(): Response
